@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Genre Classifier</title>
+    <!-- Modern and clean Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color) 0%, #1e1b4b 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-weight: 700;
+            background: linear-gradient(to right, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            font-size: 2.2rem;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 30px 20px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, #d946ef 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn-submit:active {
+            transform: translateY(1px);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .result-container.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .genre-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .genre-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--success);
+            text-transform: capitalize;
+            margin: 0;
+        }
+
+        .error-text {
+            color: var(--danger);
+            margin: 0;
+        }
+
+        .audio-player {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+        }
+        
+        /* Form errors */
+        .errorlist {
+            color: var(--danger);
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .file-name-display {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .classes-badge-container {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .class-badge {
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Music Genre Classifier</h1>
+
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+            
+            <div class="upload-area" id="uploadArea">
+                <span class="upload-icon">🎵</span>
+                <p>Drag & drop your audio file here or click to browse</p>
+                <!-- Render the generic file input visually hidden but functionally active over the area -->
+                {{ form.audio_file }}
+                <span class="file-name-display" id="fileNameDisplay">No file chosen</span>
+            </div>
+            
+            {{ form.audio_file.errors }}
+
+            <button type="submit" class="btn-submit" id="submitBtn">Analyze Audio</button>
+        </form>
+
+        {% if error_message %}
+        <div class="result-container error">
+            <p class="error-text">{{ error_message }}</p>
+        </div>
+        {% endif %}
+
+        {% if predicted_genre %}
+        <div class="result-container">
+            <div class="genre-label">Predicted Genre</div>
+            <h2 class="genre-value">{{ predicted_genre }}</h2>
+            
+            {% if uploaded_file_url %}
+            <div class="audio-player">
+                <audio controls>
+                    <source src="{{ uploaded_file_url }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="classes-badge-container">
+            {% for c in classes %}
+                <span class="class-badge">{{ c }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.querySelector('input[type="file"]');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const uploadArea = document.getElementById('uploadArea');
+            const form = document.getElementById('uploadForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            fileInput.classList.add('file-input'); // Apply the CSS class to the django generated input
+
+            fileInput.addEventListener('change', function(e) {
+                if(this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    fileNameDisplay.textContent = 'No file chosen';
+                }
+            });
+
+            // Drag and Drop styling
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                uploadArea.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                uploadArea.classList.remove('dragover');
+            }
+
+            uploadArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                let dt = e.dataTransfer;
+                let files = dt.files;
+                
+                if (files && files.length > 0) {
+                    fileInput.files = files;
+                    var event = new Event('change');
+                    fileInput.dispatchEvent(event);
+                }
+            }
+            
+            form.addEventListener('submit', function() {
+                if(fileInput.files.length > 0) {
+                    submitBtn.textContent = 'Analyzing...';
+                    submitBtn.style.opacity = '0.7';
+                    submitBtn.style.cursor = 'wait';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
