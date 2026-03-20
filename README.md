@@ -15,11 +15,11 @@ This repository contains a collection of real-world, industry-focused projects d
 
 🛠️ Tech Stack
 
-Languages: Python, SQL
+Languages: Python
 
-Libraries: Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch
+Libraries: Pandas, NumPy, Scikit-learn, TensorFlow
 
-Tools: Power BI, Jupyter Notebook, Git, Streamlit
+Tools: Power BI, Jupyter Notebook, Git, Django
 
 Concepts: EDA, Feature Engineering, Model Building, Deployment
 
