@@ -1,0 +1,66 @@
+# Music Genre Classification Web App - Running Instructions
+
+This guide explains how to run the application on either the original development device or a completely new machine.
+
+---
+
+## Scenario A: Running on the SAME Device (Quick Start)
+Use this section if the project and dependencies are already set up on your machine.
+
+1. **Open a Terminal** in the project root directory:
+   `c:\Users\acer\PycharmProjects\machineLearning\Music_Genre_Classification`
+
+2. **Activate your environment** (if applicable):
+   ```powershell
+   # Only if you used a virtual environment previously
+   venv\Scripts\activate
+   ```
+
+3. **Start the server**:
+   ```bash
+   python manage.py runserver
+   ```
+
+4. **Access the App**: Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.
+
+---
+
+## Scenario B: Running on a NEW Device (Full Setup)
+Use this section if you are setting up the project on a new machine for the first time.
+
+1. **Install Python**: Ensure Python 3.9+ is installed.
+
+2. **Clone/Copy Project**: Ensure all project files are in a local directory.
+
+3. **Set Up a Virtual Environment** (Recommended):
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate
+   ```
+
+4. **Install Dependencies**:
+   Run the following command to install only the necessary libraries:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. **Verify the Model**:
+   Ensure `Trained_model.keras` is located in the root folder of the project.
+
+6. **Apply Migrations** (Optional but recommended):
+   ```bash
+   python manage.py migrate
+   ```
+
+7. **Start the server**:
+   ```bash
+   python manage.py runserver
+   ```
+
+8. **Access the App**: Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.
+
+---
+
+## Troubleshooting
+- **Encoding Error**: If you see a `charmap` error on Windows, the project is already configured to fix this in `manage.py`. Just restart the server.
+- **Model Missing**: If the `.keras` file isn't found, the web UI will display a helpful error message. Ensure the filename is exactly `Trained_model.keras`.
