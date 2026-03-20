@@ -1,5 +1,6 @@
-# ARP-Infomatrix-Pvt-Ltd-Projects
+
 This repository contains a collection of real-world, industry-focused projects developed during my internship. The goal is to solve practical problems using modern AI technologies and build production-level solutions.
+
 
 🔍 Project Focus Areas
 
@@ -11,6 +12,7 @@ This repository contains a collection of real-world, industry-focused projects d
 
 📊 Data Analysis – Insights, visualization, and preprocessing
 
+
 🛠️ Tech Stack
 
 Languages: Python, SQL
@@ -20,6 +22,7 @@ Libraries: Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch
 Tools: Power BI, Jupyter Notebook, Git, Streamlit
 
 Concepts: EDA, Feature Engineering, Model Building, Deployment
+
 
 📁 What You'll Find
 
@@ -32,6 +35,7 @@ Clean and structured code
 Insights and visualizations
 
 Model evaluation and improvements
+
 
 🎯 Objective
 
